@@ -45,6 +45,15 @@ local Remotes = {
 	UnlockChest = Knit:WaitForChild("ChestService"):WaitForChild("RF"):WaitForChild("UnlockChest"),
 }
 
+local CM = require(ReplicatedStorage.common.lib.modules.CatchingMinigame)
+local _new = CM.new
+CM.new = function(c, cfg)
+	local i = _new(c, cfg)
+	i.controlBarScale = 5
+	i.progressGravity = 0
+	return i
+end
+
 local Assets = {
 	Fish = ReplicatedStorage.common.assets.fish,
 	Guns = ReplicatedStorage.common.assets.guns,
@@ -138,8 +147,6 @@ local SellCordinat = {
 	CFrame.new(-4, 4883, -125),
 }
 
-local CaughtSignal = Instance.new("BindableEvent")
-
 local st = {
 	SelectedMutations = {},
 	SelectRarity = {},
@@ -196,6 +203,7 @@ local st = {
 	FakeLevel = "",
 	EquipGunName = nil,
 	EquipTubeName = nil,
+	NoclipEnabled = true,
 }
 
 local _thread, _favConnection, _webhookConnection, _statsWebhookLoop = nil, nil, nil, nil
@@ -212,8 +220,37 @@ local function SetNoclip(enabled)
 	end
 end
 
+local function DisableAllCollisions()
+	local char = LocalPlayer.Character
+	if not char then return end
+	for _, part in ipairs(char:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.CanCollide = false
+		end
+	end
+end
+
 RunService.Stepped:Connect(function()
-	if st.IsTweening then SetNoclip(true) end
+	if st.NoclipEnabled or st.IsTweening or st.AutoFarm then
+		SetNoclip(true)
+		DisableAllCollisions()
+	end
+end)
+
+LocalPlayer.CharacterAdded:Connect(function(char)
+	task.wait(0.5)
+	if st.NoclipEnabled or st.AutoFarm then
+		for _, part in ipairs(char:GetDescendants()) do
+			if part:IsA("BasePart") then
+				part.CanCollide = false
+			end
+		end
+	end
+	char.DescendantAdded:Connect(function(desc)
+		if (st.NoclipEnabled or st.AutoFarm) and desc:IsA("BasePart") then
+			desc.CanCollide = false
+		end
+	end)
 end)
 
 local function CancelCurrentTween()
@@ -222,7 +259,6 @@ local function CancelCurrentTween()
 		st.CurrentTween = nil
 	end
 	st.IsTweening = false
-	SetNoclip(false)
 end
 
 local function TweenTo(cf)
@@ -237,7 +273,6 @@ local function TweenTo(cf)
 	tween.Completed:Once(function()
 		if st.CurrentTween == tween then
 			st.IsTweening = false
-			SetNoclip(false)
 		end
 	end)
 end
@@ -269,7 +304,6 @@ local function TweenToAndWait(cf, speed)
 	while (hrp.Position - cf.Position).Magnitude > 3 do task.wait(0.001) end
 	st.CurrentTween = nil
 	st.IsTweening = false
-	SetNoclip(false)
 	return true
 end
 
@@ -518,21 +552,6 @@ local function findTarget()
 	return nil
 end
 
-local function WaitForCaughtNotification(timeout)
-	local caught = false
-	local conn
-	conn = CaughtSignal.Event:Connect(function()
-		caught = true
-	end)
-	local start = os.clock()
-	while not caught and (os.clock() - start) < timeout do
-		if not st.AutoFarm then break end
-		task.wait(0.05)
-	end
-	conn:Disconnect()
-	return caught
-end
-
 local function HandleOxygenRefill()
 	if st.IsGoingSafe or not st.AutoRefillOxygen then return end
 	local ok, low = pcall(function()
@@ -562,7 +581,6 @@ local function HandleOxygenRefill()
 	if st.CurrentTween then st.CurrentTween.Completed:Wait() end
 	st.CurrentTween = nil
 	st.IsTweening = false
-	SetNoclip(false)
 
 	while st.AutoFarm do
 		local cur = GetCurrentOxygen()
@@ -576,7 +594,6 @@ local function HandleOxygenRefill()
 		if st.CurrentTween then st.CurrentTween.Completed:Wait() end
 		st.CurrentTween = nil
 		st.IsTweening = false
-		SetNoclip(false)
 	end
 
 	st.IsGoingSafe = false
@@ -616,32 +633,9 @@ local function HandleSell()
 	st.IsBusy = false
 end
 
-local function StartCaughtListener()
-	if _caughtListener then return end
-	local Notifications = PlayerGui:WaitForChild("Top"):WaitForChild("Notifications")
-	_caughtListener = Notifications.ChildAdded:Connect(function(child)
-		task.wait(0.05)
-		pcall(function()
-			local label = child:FindFirstChild("Frame") and child.Frame:FindFirstChild("Label")
-			if label and string.find(label.Text, "Caught") then
-				CaughtSignal:Fire()
-			end
-		end)
-	end)
-end
-
-local function StopCaughtListener()
-	if _caughtListener then
-		_caughtListener:Disconnect()
-		_caughtListener = nil
-	end
-end
-
 local function StartAutoFarm()
 	if st.AutoFarm then return end
 	st.AutoFarm = true
-
-	StartCaughtListener()
 
 	if st.SelectedFarm and st.SelectedFarm ~= "Forgotten Deep" then
 		local farmCF = LocFarm[st.SelectedFarm]
@@ -652,6 +646,12 @@ local function StartAutoFarm()
 
 	_thread = task.spawn(function()
 		while st.AutoFarm do
+			if LocalPlayer:GetAttribute("catching") then
+				repeat task.wait(0.1) until not LocalPlayer:GetAttribute("catching") or not st.AutoFarm
+				task.wait(0.2)
+				continue
+			end
+
 			if st.IsBusy then
 				repeat task.wait(0.1) until not st.IsBusy or not st.AutoFarm
 				task.wait(0.2)
@@ -709,18 +709,18 @@ local function StartAutoFarm()
 
 					if st.InstantCatch then
 						task.wait(0.8)
-						if st.AutoFarm then
+						if st.AutoFarm and LocalPlayer:GetAttribute("catching") then
 							pcall(function()
 								Remotes.UpdateMinigame:InvokeServer("ProgressUpdate", { progress = 1, rewards = {} })
 							end)
 						end
 					end
 
-					local gotCaught = WaitForCaughtNotification(10)
-
-					if not gotCaught and st.AutoFarm then
-						task.wait(0.5)
+					if LocalPlayer:GetAttribute("catching") then
+						repeat task.wait(0.1) until not LocalPlayer:GetAttribute("catching") or not st.AutoFarm
 					end
+
+					task.wait(0.2)
 				else
 					task.wait(0.3)
 				end
@@ -739,7 +739,6 @@ local function StopAutoFarm()
 	st.IsSelling = false
 	st.IsGoingSafe = false
 	CancelCurrentTween()
-	StopCaughtListener()
 	if _thread then task.cancel(_thread); _thread = nil end
 end
 
@@ -1447,7 +1446,7 @@ local function StopHideIdentifier()
 end
 
 local Window = VoraLib:CreateWindow({
-	Name = "VoraHUB | Abyss",
+	Name = "VoraHUB | Abyss Fixed",
 	Intro = true,
 	Theme = {
 		Background = Color3.fromRGB(10, 12, 25),
@@ -1466,14 +1465,12 @@ local Tabs = {
 
 Tabs.Home:CreateSection({ Name = "Information" })
 Tabs.Home:CreateParagraph({
-	Title = "Changelog | v0.1.6-fix",
+	Title = "Changelog | v0.1.7-fixed",
 	Content = table.concat({
-		"[FIX] Fish diem - dual detection (cache + workspace)",
-		"[FIX] Kecepetan pindah - tunggu notif Caught dulu",
-		"[FIX] ESP dual source (cache + workspace fallback)",
-		"[+] Catch Distance slider",
-		"[+] Mutation to Catch dropdown",
-		"[+] Realtime caught listener via BindableEvent",
+		"[FIX] Anti-kick: Always noclip + no collision",
+		"[FIX] Auto farm uses catching attribute check",
+		"[FIX] CatchingMinigame override restored",
+		"[FIX] Removed CaughtSignal notification dependency",
 		"",
 		"Discord: discord.gg/vorahub",
 	}, "\n")
@@ -1519,6 +1516,13 @@ Tabs.Main:CreateToggle({
 			end
 		end)
 	end
+})
+
+Tabs.Main:CreateToggle({
+	Name = "Always Noclip",
+	SubText = "Keep noclip enabled at all times to prevent kicks.",
+	Default = true,
+	Callback = function(v) st.NoclipEnabled = v end
 })
 
 Tabs.Main:CreateSection({ Name = "Equip Items" })
@@ -1731,7 +1735,7 @@ Tabs.Farm:CreateToggle({
 
 Tabs.Farm:CreateToggle({
 	Name = "Start Auto Farm",
-	SubText = "Waits for Caught notification before next fish.",
+	SubText = "",
 	Default = false,
 	Callback = function(v) if v then StartAutoFarm() else StopAutoFarm() end end
 })
@@ -1941,7 +1945,7 @@ end)
 task.defer(function()
 	task.wait(0.1)
 	Window:Notify({
-		Title = "Abyss v0.1.6-fix",
+		Title = "Abyss",
 		Content = "Script loaded successfully!",
 		Duration = 5
 	})
