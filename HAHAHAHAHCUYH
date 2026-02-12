@@ -589,16 +589,8 @@ function Orion:Window(GuiConfig)
 	Sidebar.BorderSizePixel = 0
 	Sidebar.ZIndex = 2
 	Sidebar.Parent = Main
-	local sideCorner = Instance.new("UICorner", Sidebar)
-	sideCorner.CornerRadius = UDim.new(0, 12)
-
-	local SideCap = Instance.new("Frame")
-	SideCap.Size = UDim2.new(1, 0, 0, 14)
-	SideCap.Position = UDim2.new(0, 0, 0, 0)
-	SideCap.BackgroundColor3 = COL.sidebar
-	SideCap.BorderSizePixel = 0
-	SideCap.ZIndex = 2
-	SideCap.Parent = Sidebar
+	-- No UICorner on Sidebar: Main.ClipsDescendants+UICorner handles bottom corners automatically
+	-- This also removes the top-corner gap that UICorner caused below the TopBar
 
 	local SideDivider = Instance.new("Frame")
 	SideDivider.Size = UDim2.new(0, 1, 1, 0)
@@ -978,14 +970,23 @@ function Orion:Window(GuiConfig)
 	BtnGui.Parent = CoreGui
 
 	local TogBtn = Instance.new("ImageButton")
-	TogBtn.Size = UDim2.new(0, 40, 0, 40)
-	TogBtn.Position = UDim2.new(0, 14, 0, 100)
-	TogBtn.BackgroundTransparency = 1
+	TogBtn.Size = UDim2.new(0, 44, 0, 44)
+	TogBtn.Position = UDim2.new(0, 10, 0, 100)
+	TogBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+	TogBtn.BackgroundTransparency = 0.15
 	TogBtn.BorderSizePixel = 0
 	TogBtn.AutoButtonColor = false
 	TogBtn.Image = GuiConfig.Image and ("rbxassetid://" .. GuiConfig.Image:gsub("rbxassetid://", "")) or "rbxassetid://134197362082558"
+	TogBtn.ImageTransparency = 0
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
+	local togCorner = Instance.new("UICorner", TogBtn)
+	togCorner.CornerRadius = UDim.new(0, 10)
+	local togPad = Instance.new("UIPadding", TogBtn)
+	togPad.PaddingLeft = UDim.new(0, 6)
+	togPad.PaddingRight = UDim.new(0, 6)
+	togPad.PaddingTop = UDim.new(0, 6)
+	togPad.PaddingBottom = UDim.new(0, 6)
 
 	TogBtn.MouseButton1Click:Connect(function()
 		Main.Visible = not Main.Visible
