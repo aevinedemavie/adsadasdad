@@ -592,6 +592,14 @@ function Orion:Window(GuiConfig)
 	local sideCorner = Instance.new("UICorner", Sidebar)
 	sideCorner.CornerRadius = UDim.new(0, 12)
 
+	local SideCap = Instance.new("Frame")
+	SideCap.Size = UDim2.new(1, 0, 0, 14)
+	SideCap.Position = UDim2.new(0, 0, 0, 0)
+	SideCap.BackgroundColor3 = COL.sidebar
+	SideCap.BorderSizePixel = 0
+	SideCap.ZIndex = 2
+	SideCap.Parent = Sidebar
+
 	local SideDivider = Instance.new("Frame")
 	SideDivider.Size = UDim2.new(0, 1, 1, 0)
 	SideDivider.Position = UDim2.new(1, 0, 0, 0)
@@ -605,7 +613,7 @@ function Orion:Window(GuiConfig)
 	LogoImg.Size = UDim2.new(0, 22, 0, 22)
 	LogoImg.Position = UDim2.new(0, 12, 0, -30)
 	LogoImg.BackgroundTransparency = 1
-	LogoImg.Image = "rbxassetid://134197362082558"
+	LogoImg.Image = GuiConfig.Image and ("rbxassetid://" .. GuiConfig.Image:gsub("rbxassetid://", "")) or "rbxassetid://134197362082558"
 	LogoImg.ScaleType = Enum.ScaleType.Fit
 	LogoImg.ZIndex = 12
 	LogoImg.Parent = TopBar
@@ -975,7 +983,7 @@ function Orion:Window(GuiConfig)
 	TogBtn.BackgroundTransparency = 1
 	TogBtn.BorderSizePixel = 0
 	TogBtn.AutoButtonColor = false
-	TogBtn.Image = "rbxassetid://134197362082558"
+	TogBtn.Image = GuiConfig.Image and ("rbxassetid://" .. GuiConfig.Image:gsub("rbxassetid://", "")) or "rbxassetid://134197362082558"
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
 
@@ -1811,12 +1819,6 @@ function Orion:Window(GuiConfig)
 			end
 		})
 
-		ConfigSection:AddButton({
-			Title = "Destroy GUI",
-			Callback = function()
-				GuiFunc:DestroyGui()
-			end
-		})
 	end
 
 	return GuiFunc, Tabs
