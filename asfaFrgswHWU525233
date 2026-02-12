@@ -261,7 +261,8 @@ local function MakeResizable(frame, minW, minH, maxW, maxH)
 	dot1.BorderSizePixel = 0
 	dot1.ZIndex = 100
 	dot1.Parent = resizeIcon
-	Instance.new("UICorner", dot1).CornerRadius = UDim.new(1, 0)
+	local dot1Corner = Instance.new("UICorner", dot1)
+	dot1Corner.CornerRadius = UDim.new(1, 0)
 
 	local dot2 = Instance.new("Frame")
 	dot2.Size = UDim2.new(0, 2, 0, 2)
@@ -271,7 +272,8 @@ local function MakeResizable(frame, minW, minH, maxW, maxH)
 	dot2.BorderSizePixel = 0
 	dot2.ZIndex = 100
 	dot2.Parent = resizeIcon
-	Instance.new("UICorner", dot2).CornerRadius = UDim.new(1, 0)
+	local dot2Corner = Instance.new("UICorner", dot2)
+	dot2Corner.CornerRadius = UDim.new(1, 0)
 
 	local dot3 = Instance.new("Frame")
 	dot3.Size = UDim2.new(0, 2, 0, 2)
@@ -281,7 +283,8 @@ local function MakeResizable(frame, minW, minH, maxW, maxH)
 	dot3.BorderSizePixel = 0
 	dot3.ZIndex = 100
 	dot3.Parent = resizeIcon
-	Instance.new("UICorner", dot3).CornerRadius = UDim.new(1, 0)
+	local dot3Corner = Instance.new("UICorner", dot3)
+	dot3Corner.CornerRadius = UDim.new(1, 0)
 
 	local resizing = false
 	local resizeStart, startSize
@@ -361,7 +364,8 @@ local function Notify(msg, dur, col)
 		nf.BorderSizePixel = 0
 		nf.ClipsDescendants = true
 		nf.Parent = holder
-		Instance.new("UICorner", nf).CornerRadius = UDim.new(0, 8)
+		local nfCorner = Instance.new("UICorner", nf)
+		nfCorner.CornerRadius = UDim.new(0, 8)
 
 		local ac = Instance.new("Frame")
 		ac.Size = UDim2.new(0, 3, 1, -8)
@@ -369,7 +373,8 @@ local function Notify(msg, dur, col)
 		ac.BackgroundColor3 = col or Color3.fromRGB(130, 80, 255)
 		ac.BorderSizePixel = 0
 		ac.Parent = nf
-		Instance.new("UICorner", ac).CornerRadius = UDim.new(0, 2)
+		local acCorner = Instance.new("UICorner", ac)
+		acCorner.CornerRadius = UDim.new(0, 2)
 
 		local tl = Instance.new("TextLabel")
 		tl.Font = Enum.Font.GothamBold
@@ -474,7 +479,8 @@ function Orion:Window(GuiConfig)
 	Main.BorderSizePixel = 0
 	Main.ClipsDescendants = true
 	Main.Parent = ScreenGui
-	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
+	local mainCorner = Instance.new("UICorner", Main)
+	mainCorner.CornerRadius = UDim.new(0, 12)
 
 	local TopBar = Instance.new("Frame")
 	TopBar.Name = "TopBar"
@@ -571,7 +577,7 @@ function Orion:Window(GuiConfig)
 		}):Play()
 		task.delay(0.35, function()
 			ScreenGui:Destroy()
-			if CoreGui:FindFirstChild("OrionToggle") then CoreGui.OrionToggle:Destroy() end
+			if CoreGui:FindFirstChild("OrionToggle") then CoreGui:OrionToggle:Destroy() end
 		end)
 	end)
 
@@ -701,7 +707,8 @@ function Orion:Window(GuiConfig)
 	Indicator.BorderSizePixel = 0
 	Indicator.ZIndex = 5
 	Indicator.Parent = Sidebar
-	Instance.new("UICorner", Indicator).CornerRadius = UDim.new(0, 2)
+	local indCorner = Instance.new("UICorner", Indicator)
+	indCorner.CornerRadius = UDim.new(0, 2)
 
 	local DropOverlay = Instance.new("TextButton")
 	DropOverlay.Name = "DropOverlay"
@@ -725,7 +732,8 @@ function Orion:Window(GuiConfig)
 	DropPanel.Visible = false
 	DropPanel.ClipsDescendants = true
 	DropPanel.Parent = Main
-	Instance.new("UICorner", DropPanel).CornerRadius = UDim.new(0, 12)
+	local dpCorner = Instance.new("UICorner", DropPanel)
+	dpCorner.CornerRadius = UDim.new(0, 12)
 
 	local dpTitle = Instance.new("TextLabel")
 	dpTitle.Name = "Title"
@@ -766,7 +774,8 @@ function Orion:Window(GuiConfig)
 	dpSearch.ClearTextOnFocus = false
 	dpSearch.ZIndex = 82
 	dpSearch.Parent = DropPanel
-	Instance.new("UICorner", dpSearch).CornerRadius = UDim.new(0, 6)
+	local dpSCorner = Instance.new("UICorner", dpSearch)
+	dpSCorner.CornerRadius = UDim.new(0, 6)
 	local dpSPad = Instance.new("UIPadding")
 	dpSPad.PaddingLeft = UDim.new(0, 8)
 	dpSPad.Parent = dpSearch
@@ -840,7 +849,8 @@ function Orion:Window(GuiConfig)
 			of.LayoutOrder = i
 			of.ZIndex = 83
 			of.Parent = dpScroll
-			Instance.new("UICorner", of).CornerRadius = UDim.new(0, 6)
+			local ofCorner = Instance.new("UICorner", of)
+			ofCorner.CornerRadius = UDim.new(0, 6)
 			of:SetAttribute("Val", value)
 
 			local ob = Instance.new("TextButton")
@@ -873,7 +883,8 @@ function Orion:Window(GuiConfig)
 			ck.ZIndex = 83
 			ck.Visible = false
 			ck.Parent = of
-			Instance.new("UICorner", ck).CornerRadius = UDim.new(1, 0)
+			local ckCorner = Instance.new("UICorner", ck)
+			ckCorner.CornerRadius = UDim.new(1, 0)
 
 			local sel = multi and (table.find(dropFunc.Value, value) ~= nil) or (dropFunc.Value == value)
 			ck.Visible = sel
@@ -965,7 +976,8 @@ function Orion:Window(GuiConfig)
 	TogBtn.Image = "rbxassetid://128370480474724"
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
-	Instance.new("UICorner", TogBtn).CornerRadius = UDim.new(0, 10)
+	local togCorner = Instance.new("UICorner", TogBtn)
+	togCorner.CornerRadius = UDim.new(0, 10)
 
 	TogBtn.MouseButton1Click:Connect(function()
 		Main.Visible = not Main.Visible
@@ -1050,7 +1062,8 @@ function Orion:Window(GuiConfig)
 		TabBtn.BorderSizePixel = 0
 		TabBtn.ZIndex = 4
 		TabBtn.Parent = TabScroll
-		Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8)
+		local tabCorner = Instance.new("UICorner", TabBtn)
+		tabCorner.CornerRadius = UDim.new(0, 8)
 
 		local TIcon = Instance.new("ImageLabel")
 		TIcon.Size = UDim2.new(0, 15, 0, 15)
@@ -1257,7 +1270,8 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
 
 				local btn = Instance.new("TextButton")
 				btn.Text = ""
@@ -1285,7 +1299,8 @@ function Orion:Window(GuiConfig)
 				sb.BackgroundColor3 = COL.switchOff
 				sb.BorderSizePixel = 0
 				sb.Parent = fr
-				Instance.new("UICorner", sb).CornerRadius = UDim.new(1, 0)
+				local sbCorner = Instance.new("UICorner", sb)
+				sbCorner.CornerRadius = UDim.new(1, 0)
 
 				local sc = Instance.new("Frame")
 				sc.Size = UDim2.new(0, 12, 0, 12)
@@ -1293,7 +1308,8 @@ function Orion:Window(GuiConfig)
 				sc.BackgroundColor3 = COL.switchKnobOff
 				sc.BorderSizePixel = 0
 				sc.Parent = sb
-				Instance.new("UICorner", sc).CornerRadius = UDim.new(1, 0)
+				local scCorner = Instance.new("UICorner", sc)
+				scCorner.CornerRadius = UDim.new(1, 0)
 
 				function F:Set(val)
 					F.Value = val
@@ -1337,7 +1353,8 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
 
 				local dbtn = Instance.new("TextButton")
 				dbtn.Text = ""
@@ -1365,7 +1382,8 @@ function Orion:Window(GuiConfig)
 				sf.BackgroundColor3 = Color3.fromRGB(28, 28, 33)
 				sf.BorderSizePixel = 0
 				sf.Parent = fr
-				Instance.new("UICorner", sf).CornerRadius = UDim.new(0, 6)
+				local sfCorner = Instance.new("UICorner", sf)
+				sfCorner.CornerRadius = UDim.new(0, 6)
 
 				local sl = Instance.new("TextLabel")
 				sl.Font = Enum.Font.Gotham
@@ -1450,7 +1468,8 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
 
 				local itl = Instance.new("TextLabel")
 				itl.Font = Enum.Font.GothamBold
@@ -1478,7 +1497,8 @@ function Orion:Window(GuiConfig)
 				ib.ClearTextOnFocus = false
 				ib.ClipsDescendants = true
 				ib.Parent = fr
-				Instance.new("UICorner", ib).CornerRadius = UDim.new(0, 6)
+				local ibCorner = Instance.new("UICorner", ib)
+				ibCorner.CornerRadius = UDim.new(0, 6)
 				local ibp = Instance.new("UIPadding")
 				ibp.PaddingLeft = UDim.new(0, 8)
 				ibp.Parent = ib
@@ -1535,7 +1555,8 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
 
 				local mb = Instance.new("TextButton")
 				mb.Font = Enum.Font.GothamBold
@@ -1546,7 +1567,8 @@ function Orion:Window(GuiConfig)
 				mb.BorderSizePixel = 0
 				mb.AutoButtonColor = false
 				mb.Parent = fr
-				Instance.new("UICorner", mb).CornerRadius = UDim.new(0, 6)
+				local mbCorner = Instance.new("UICorner", mb)
+				mbCorner.CornerRadius = UDim.new(0, 6)
 
 				hoverBind(mb, mb, COL.btnBg, COL.btnHover)
 				pressAnim(mb, mb, COL.btnBg, Color3.fromRGB(55, 55, 64))
@@ -1566,7 +1588,8 @@ function Orion:Window(GuiConfig)
 					sb.Size = UDim2.new(0.5, -6, 0, 26)
 					sb.Position = UDim2.new(0.5, 2, 0, 4)
 					sb.Parent = fr
-					Instance.new("UICorner", sb).CornerRadius = UDim.new(0, 6)
+					local sbCorner = Instance.new("UICorner", sb)
+					sbCorner.CornerRadius = UDim.new(0, 6)
 
 					hoverBind(sb, sb, COL.btnBg, COL.btnHover)
 					pressAnim(sb, sb, COL.btnBg, Color3.fromRGB(55, 55, 64))
@@ -1600,7 +1623,8 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
 
 				local stl = Instance.new("TextLabel")
 				stl.Font = Enum.Font.GothamBold
@@ -1631,14 +1655,16 @@ function Orion:Window(GuiConfig)
 				trk.BackgroundColor3 = COL.trackBg
 				trk.BorderSizePixel = 0
 				trk.Parent = fr
-				Instance.new("UICorner", trk).CornerRadius = UDim.new(1, 0)
+				local trkCorner = Instance.new("UICorner", trk)
+				trkCorner.CornerRadius = UDim.new(1, 0)
 
 				local fill = Instance.new("Frame")
 				fill.Size = UDim2.new(0.5, 0, 1, 0)
 				fill.BackgroundColor3 = Accent
 				fill.BorderSizePixel = 0
 				fill.Parent = trk
-				Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+				local fillCorner = Instance.new("UICorner", fill)
+				fillCorner.CornerRadius = UDim.new(1, 0)
 
 				local knob = Instance.new("Frame")
 				knob.AnchorPoint = Vector2.new(1, 0.5)
@@ -1648,7 +1674,8 @@ function Orion:Window(GuiConfig)
 				knob.BorderSizePixel = 0
 				knob.ZIndex = 3
 				knob.Parent = fill
-				Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
+				local knobCorner = Instance.new("UICorner", knob)
+				knobCorner.CornerRadius = UDim.new(1, 0)
 
 				local dr = false
 				local function rnd(n, f) return math.floor(n / f + 0.5) * f end
@@ -1784,7 +1811,7 @@ function Orion:Window(GuiConfig)
 		})
 
 		ConfigSection:AddButton({
-			Title = "Close",
+			Title = "Destroy GUI",
 			Callback = function()
 				GuiFunc:DestroyGui()
 			end
