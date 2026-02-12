@@ -493,7 +493,7 @@ function Orion:Window(GuiConfig)
 	Main.BorderSizePixel = 0
 	Main.ClipsDescendants = true
 	Main.Parent = Shadow
-	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
 
 	local MainStroke = Instance.new("UIStroke")
 	MainStroke.Color = COL.border
@@ -529,66 +529,46 @@ function Orion:Window(GuiConfig)
 
 	MakeResizable(Main, MinW, MinH, MaxW, MaxH)
 
+	-- IMPROVED CLOSE BUTTON - No border, just text
 	local CloseBtn = Instance.new("TextButton")
-	CloseBtn.Text = ""
+	CloseBtn.Text = "✕"
+	CloseBtn.Font = Enum.Font.GothamBold
+	CloseBtn.TextSize = 14
 	CloseBtn.Size = UDim2.new(0, 28, 0, 28)
 	CloseBtn.AnchorPoint = Vector2.new(1, 0.5)
 	CloseBtn.Position = UDim2.new(1, -6, 0.5, 0)
-	CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
-	CloseBtn.BackgroundTransparency = 0.85
+	CloseBtn.TextColor3 = Color3.fromRGB(220, 85, 85)
+	CloseBtn.BackgroundTransparency = 1
 	CloseBtn.AutoButtonColor = false
 	CloseBtn.ZIndex = 12
 	CloseBtn.Parent = TopBar
-	Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
-
-	local CloseX = Instance.new("TextLabel")
-	CloseX.Text = "✕"
-	CloseX.Font = Enum.Font.GothamBold
-	CloseX.TextSize = 12
-	CloseX.TextColor3 = Color3.fromRGB(200, 80, 80)
-	CloseX.BackgroundTransparency = 1
-	CloseX.Size = UDim2.new(1, 0, 1, 0)
-	CloseX.ZIndex = 13
-	CloseX.Parent = CloseBtn
 
 	CloseBtn.MouseEnter:Connect(function()
-		TweenService:Create(CloseBtn, TWEEN_FAST, { BackgroundTransparency = 0.6 }):Play()
-		TweenService:Create(CloseX, TWEEN_FAST, { TextColor3 = Color3.fromRGB(255, 100, 100) }):Play()
+		TweenService:Create(CloseBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(255, 120, 120) }):Play()
 	end)
 	CloseBtn.MouseLeave:Connect(function()
-		TweenService:Create(CloseBtn, TWEEN_FAST, { BackgroundTransparency = 0.85 }):Play()
-		TweenService:Create(CloseX, TWEEN_FAST, { TextColor3 = Color3.fromRGB(200, 80, 80) }):Play()
+		TweenService:Create(CloseBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(220, 85, 85) }):Play()
 	end)
 
+	-- IMPROVED MINIMIZE BUTTON - No border, just text
 	local MinBtn = Instance.new("TextButton")
-	MinBtn.Text = ""
+	MinBtn.Text = "─"
+	MinBtn.Font = Enum.Font.GothamBold
+	MinBtn.TextSize = 14
 	MinBtn.Size = UDim2.new(0, 28, 0, 28)
 	MinBtn.AnchorPoint = Vector2.new(1, 0.5)
 	MinBtn.Position = UDim2.new(1, -38, 0.5, 0)
-	MinBtn.BackgroundColor3 = Color3.fromRGB(200, 180, 60)
-	MinBtn.BackgroundTransparency = 0.85
+	MinBtn.TextColor3 = Color3.fromRGB(220, 200, 85)
+	MinBtn.BackgroundTransparency = 1
 	MinBtn.AutoButtonColor = false
 	MinBtn.ZIndex = 12
 	MinBtn.Parent = TopBar
-	Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 6)
-
-	local MinLine = Instance.new("Frame")
-	MinLine.AnchorPoint = Vector2.new(0.5, 0.5)
-	MinLine.Position = UDim2.new(0.5, 0, 0.5, 0)
-	MinLine.Size = UDim2.new(0, 10, 0, 2)
-	MinLine.BackgroundColor3 = Color3.fromRGB(200, 180, 80)
-	MinLine.BorderSizePixel = 0
-	MinLine.ZIndex = 13
-	MinLine.Parent = MinBtn
-	Instance.new("UICorner", MinLine).CornerRadius = UDim.new(0, 1)
 
 	MinBtn.MouseEnter:Connect(function()
-		TweenService:Create(MinBtn, TWEEN_FAST, { BackgroundTransparency = 0.6 }):Play()
-		TweenService:Create(MinLine, TWEEN_FAST, { BackgroundColor3 = Color3.fromRGB(255, 220, 80) }):Play()
+		TweenService:Create(MinBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(255, 240, 120) }):Play()
 	end)
 	MinBtn.MouseLeave:Connect(function()
-		TweenService:Create(MinBtn, TWEEN_FAST, { BackgroundTransparency = 0.85 }):Play()
-		TweenService:Create(MinLine, TWEEN_FAST, { BackgroundColor3 = Color3.fromRGB(200, 180, 80) }):Play()
+		TweenService:Create(MinBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(220, 200, 85) }):Play()
 	end)
 
 	local isMinimized = false
@@ -621,13 +601,13 @@ function Orion:Window(GuiConfig)
 	CloseBtn.MouseButton1Click:Connect(function()
 		if not closeConfirm then
 			closeConfirm = true
-			CloseX.Text = "?"
-			TweenService:Create(CloseBtn, TWEEN_FAST, { BackgroundTransparency = 0.4, BackgroundColor3 = Color3.fromRGB(220, 50, 50) }):Play()
+			CloseBtn.Text = "?"
+			TweenService:Create(CloseBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(255, 100, 100) }):Play()
 			task.delay(2, function()
 				if closeConfirm then
 					closeConfirm = false
-					CloseX.Text = "✕"
-					TweenService:Create(CloseBtn, TWEEN_FAST, { BackgroundTransparency = 0.85, BackgroundColor3 = Color3.fromRGB(200, 60, 60) }):Play()
+					CloseBtn.Text = "✕"
+					TweenService:Create(CloseBtn, TWEEN_FAST, { TextColor3 = Color3.fromRGB(220, 85, 85) }):Play()
 				end
 			end)
 		else
@@ -762,6 +742,7 @@ function Orion:Window(GuiConfig)
 		end
 	end
 
+	-- IMPROVED INDICATOR - Removed purple glow
 	local Indicator = Instance.new("Frame")
 	Indicator.Name = "Indicator"
 	Indicator.Size = UDim2.new(0, 3, 0, 16)
@@ -771,16 +752,6 @@ function Orion:Window(GuiConfig)
 	Indicator.ZIndex = 5
 	Indicator.Parent = Sidebar
 	Instance.new("UICorner", Indicator).CornerRadius = UDim.new(0, 2)
-
-	local IndicatorGlow = Instance.new("Frame")
-	IndicatorGlow.Size = UDim2.new(0, 6, 0, 16)
-	IndicatorGlow.Position = UDim2.new(0, 1, 0, 0)
-	IndicatorGlow.BackgroundColor3 = Accent
-	IndicatorGlow.BackgroundTransparency = 0.7
-	IndicatorGlow.BorderSizePixel = 0
-	IndicatorGlow.ZIndex = 4
-	IndicatorGlow.Parent = Indicator
-	Instance.new("UICorner", IndicatorGlow).CornerRadius = UDim.new(0, 3)
 
 	local DropOverlay = Instance.new("TextButton")
 	DropOverlay.Name = "DropOverlay"
@@ -804,7 +775,7 @@ function Orion:Window(GuiConfig)
 	DropPanel.Visible = false
 	DropPanel.ClipsDescendants = true
 	DropPanel.Parent = Main
-	Instance.new("UICorner", DropPanel).CornerRadius = UDim.new(0, 10)
+	Instance.new("UICorner", DropPanel).CornerRadius = UDim.new(0, 12)
 
 	local dpStroke = Instance.new("UIStroke")
 	dpStroke.Color = COL.borderLight
@@ -851,7 +822,7 @@ function Orion:Window(GuiConfig)
 	dpSearch.ClearTextOnFocus = false
 	dpSearch.ZIndex = 82
 	dpSearch.Parent = DropPanel
-	Instance.new("UICorner", dpSearch).CornerRadius = UDim.new(0, 5)
+	Instance.new("UICorner", dpSearch).CornerRadius = UDim.new(0, 6)
 	local dpSPad = Instance.new("UIPadding")
 	dpSPad.PaddingLeft = UDim.new(0, 8)
 	dpSPad.Parent = dpSearch
@@ -925,7 +896,7 @@ function Orion:Window(GuiConfig)
 			of.LayoutOrder = i
 			of.ZIndex = 83
 			of.Parent = dpScroll
-			Instance.new("UICorner", of).CornerRadius = UDim.new(0, 5)
+			Instance.new("UICorner", of).CornerRadius = UDim.new(0, 6)
 			of:SetAttribute("Val", value)
 
 			local ob = Instance.new("TextButton")
@@ -1050,7 +1021,7 @@ function Orion:Window(GuiConfig)
 	TogBtn.Image = "rbxassetid://128370480474724"
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
-	Instance.new("UICorner", TogBtn).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", TogBtn).CornerRadius = UDim.new(0, 10)
 	local tbs = Instance.new("UIStroke")
 	tbs.Color = COL.border
 	tbs.Thickness = 1
@@ -1146,7 +1117,7 @@ function Orion:Window(GuiConfig)
 		TabBtn.BorderSizePixel = 0
 		TabBtn.ZIndex = 4
 		TabBtn.Parent = TabScroll
-		Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 6)
+		Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 8)
 
 		local TIcon = Instance.new("ImageLabel")
 		TIcon.Size = UDim2.new(0, 15, 0, 15)
@@ -1353,7 +1324,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local btn = Instance.new("TextButton")
 				btn.Text = ""
@@ -1433,7 +1404,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local dbtn = Instance.new("TextButton")
 				dbtn.Text = ""
@@ -1461,7 +1432,7 @@ function Orion:Window(GuiConfig)
 				sf.BackgroundColor3 = Color3.fromRGB(28, 28, 33)
 				sf.BorderSizePixel = 0
 				sf.Parent = fr
-				Instance.new("UICorner", sf).CornerRadius = UDim.new(0, 5)
+				Instance.new("UICorner", sf).CornerRadius = UDim.new(0, 6)
 
 				local sl = Instance.new("TextLabel")
 				sl.Font = Enum.Font.Gotham
@@ -1546,7 +1517,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local itl = Instance.new("TextLabel")
 				itl.Font = Enum.Font.GothamBold
@@ -1574,7 +1545,7 @@ function Orion:Window(GuiConfig)
 				ib.ClearTextOnFocus = false
 				ib.ClipsDescendants = true
 				ib.Parent = fr
-				Instance.new("UICorner", ib).CornerRadius = UDim.new(0, 4)
+				Instance.new("UICorner", ib).CornerRadius = UDim.new(0, 6)
 				local ibp = Instance.new("UIPadding")
 				ibp.PaddingLeft = UDim.new(0, 8)
 				ibp.Parent = ib
@@ -1641,7 +1612,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local mb = Instance.new("TextButton")
 				mb.Font = Enum.Font.GothamBold
@@ -1652,7 +1623,7 @@ function Orion:Window(GuiConfig)
 				mb.BorderSizePixel = 0
 				mb.AutoButtonColor = false
 				mb.Parent = fr
-				Instance.new("UICorner", mb).CornerRadius = UDim.new(0, 5)
+				Instance.new("UICorner", mb).CornerRadius = UDim.new(0, 6)
 
 				hoverBind(mb, mb, COL.btnBg, COL.btnHover)
 				pressAnim(mb, mb, COL.btnBg, Color3.fromRGB(55, 55, 64))
@@ -1672,7 +1643,7 @@ function Orion:Window(GuiConfig)
 					sb.Size = UDim2.new(0.5, -6, 0, 26)
 					sb.Position = UDim2.new(0.5, 2, 0, 4)
 					sb.Parent = fr
-					Instance.new("UICorner", sb).CornerRadius = UDim.new(0, 5)
+					Instance.new("UICorner", sb).CornerRadius = UDim.new(0, 6)
 
 					hoverBind(sb, sb, COL.btnBg, COL.btnHover)
 					pressAnim(sb, sb, COL.btnBg, Color3.fromRGB(55, 55, 64))
@@ -1699,7 +1670,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local pt = Instance.new("TextLabel")
 				pt.Font = Enum.Font.GothamBold
@@ -1760,7 +1731,7 @@ function Orion:Window(GuiConfig)
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
 				local stl = Instance.new("TextLabel")
 				stl.Font = Enum.Font.GothamBold
@@ -1810,18 +1781,6 @@ function Orion:Window(GuiConfig)
 				knob.Parent = fill
 				Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
 
-				local knobGlow = Instance.new("Frame")
-				knobGlow.AnchorPoint = Vector2.new(0.5, 0.5)
-				knobGlow.Position = UDim2.new(0.5, 0, 0.5, 0)
-				knobGlow.Size = UDim2.new(0, 16, 0, 16)
-				knobGlow.BackgroundColor3 = Accent
-				knobGlow.BackgroundTransparency = 0.85
-				knobGlow.BorderSizePixel = 0
-				knobGlow.ZIndex = 2
-				knobGlow.Visible = false
-				knobGlow.Parent = knob
-				Instance.new("UICorner", knobGlow).CornerRadius = UDim.new(1, 0)
-
 				local dr = false
 				local function rnd(n, f) return math.floor(n / f + 0.5) * f end
 
@@ -1829,8 +1788,8 @@ function Orion:Window(GuiConfig)
 					val = math.clamp(rnd(val, cfg.Increment), cfg.Min, cfg.Max)
 					F.Value = val
 					vl.Text = tostring(val)
-					local pct = (val - cfg.Min) / (cfg.Max - cfg.Min)
-					TweenService:Create(fill, TweenInfo.new(0.06), { Size = UDim2.new(pct, 0, 1, 0) }):Play()
+					local pct = (val- cfg.Min) / (cfg.Max - cfg.Min)
+					TweenService:Create(fill, TWEEN_FAST, { Size = UDim2.new(pct, 0, 1, 0) }):Play()
 					ConfigData[ck] = val
 					pcall(cfg.Callback, val)
 				end
@@ -1838,272 +1797,190 @@ function Orion:Window(GuiConfig)
 				trk.InputBegan:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						dr = true
-						knobGlow.Visible = true
-						TweenService:Create(knob, TWEEN_FAST, { Size = UDim2.new(0, 14, 0, 14) }):Play()
-						local p = math.clamp((input.Position.X - trk.AbsolutePosition.X) / trk.AbsoluteSize.X, 0, 1)
-						F:Set(cfg.Min + (cfg.Max - cfg.Min) * p)
-					end
-				end)
-
-				trk.InputEnded:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-						dr = false
-						knobGlow.Visible = false
-						TweenService:Create(knob, TWEEN_FAST, { Size = UDim2.new(0, 10, 0, 10) }):Play()
+						local function upd(inp)
+							local rel = (inp.Position.X - trk.AbsolutePosition.X) / trk.AbsoluteSize.X
+							rel = math.clamp(rel, 0, 1)
+							local newV = cfg.Min + (cfg.Max - cfg.Min) * rel
+							F:Set(newV)
+						end
+						upd(input)
+						local con
+						con = input.Changed:Connect(function()
+							if input.UserInputState == Enum.UserInputState.End then
+								dr = false
+								con:Disconnect()
+							end
+						end)
 					end
 				end)
 
 				UserInputService.InputChanged:Connect(function(input)
 					if dr and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-						local p = math.clamp((input.Position.X - trk.AbsolutePosition.X) / trk.AbsoluteSize.X, 0, 1)
-						F:Set(cfg.Min + (cfg.Max - cfg.Min) * p)
+						local rel = (input.Position.X - trk.AbsolutePosition.X) / trk.AbsoluteSize.X
+						rel = math.clamp(rel, 0, 1)
+						local newV = cfg.Min + (cfg.Max - cfg.Min) * rel
+						F:Set(newV)
 					end
 				end)
 
-				F:Set(cfg.Default)
+				F:Set(F.Value)
 				CountItem += 1
 				Elements[ck] = F
 				return F
 			end
 
-			function Items:AddDivider()
-				local d = Instance.new("Frame")
-				d.Size = UDim2.new(1, 0, 0, 6)
-				d.BackgroundTransparency = 1
-				d.LayoutOrder = CountItem
-				d.Parent = ItemHolder
-				local ln = Instance.new("Frame")
-				ln.AnchorPoint = Vector2.new(0.5, 0.5)
-				ln.Position = UDim2.new(0.5, 0, 0.5, 0)
-				ln.Size = UDim2.new(1, -6, 0, 1)
-				ln.BackgroundColor3 = COL.border
-				ln.BackgroundTransparency = 0.4
-				ln.BorderSizePixel = 0
-				ln.Parent = d
-				CountItem += 1
-				return d
-			end
-
-			function Items:AddPanel(cfg)
+			function Items:AddKeybind(cfg)
 				cfg = cfg or {}
-				cfg.Title = cfg.Title or "Panel"
-				cfg.Content = cfg.Content or ""
-				cfg.Placeholder = cfg.Placeholder or nil
-				cfg.Default = cfg.Default or ""
-				cfg.ButtonText = cfg.Button or cfg.ButtonText or "Confirm"
-				cfg.ButtonCallback = cfg.Callback or cfg.ButtonCallback or function() end
-				cfg.SubButtonText = cfg.SubButton or cfg.SubButtonText or nil
-				cfg.SubButtonCallback = cfg.SubCallback or cfg.SubButtonCallback or function() end
+				cfg.Title = cfg.Title or "Keybind"
+				cfg.Default = cfg.Default or Enum.KeyCode.E
+				cfg.Callback = cfg.Callback or function() end
 
-				local ck2 = "Panel_" .. cfg.Title
-				if ConfigData[ck2] ~= nil then cfg.Default = ConfigData[ck2] end
-				local PF = { Value = cfg.Default }
-				local th = 42
-				if cfg.Placeholder then th = th + 28 end
-				th = th + 32
+				local ck = "Keybind_" .. cfg.Title
+				if ConfigData[ck] ~= nil then
+					local saved = ConfigData[ck]
+					if type(saved) == "string" then
+						cfg.Default = Enum.KeyCode[saved] or cfg.Default
+					end
+				end
+				local F = { Value = cfg.Default }
 
 				local fr = Instance.new("Frame")
-				fr.Size = UDim2.new(1, 0, 0, th)
+				fr.Size = UDim2.new(1, 0, 0, 34)
 				fr.BackgroundColor3 = COL.card
 				fr.BorderSizePixel = 0
 				fr.LayoutOrder = CountItem
 				fr.Parent = ItemHolder
-				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 6)
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
 
-				local ptl = Instance.new("TextLabel")
-				ptl.Font = Enum.Font.GothamBold
-				ptl.Text = cfg.Title
-				ptl.TextSize = 12
-				ptl.TextColor3 = COL.text
-				ptl.TextXAlignment = Enum.TextXAlignment.Left
-				ptl.BackgroundTransparency = 1
-				ptl.Position = UDim2.new(0, 12, 0, 6)
-				ptl.Size = UDim2.new(1, -20, 0, 14)
-				ptl.Parent = fr
+				local ktl = Instance.new("TextLabel")
+				ktl.Font = Enum.Font.GothamBold
+				ktl.Text = cfg.Title
+				ktl.TextSize = 12
+				ktl.TextColor3 = COL.text
+				ktl.TextXAlignment = Enum.TextXAlignment.Left
+				ktl.BackgroundTransparency = 1
+				ktl.Position = UDim2.new(0, 12, 0, 0)
+				ktl.Size = UDim2.new(0.5, 0, 1, 0)
+				ktl.Parent = fr
 
-				local pcl = Instance.new("TextLabel")
-				pcl.Font = Enum.Font.Gotham
-				pcl.Text = cfg.Content
-				pcl.TextSize = 10
-				pcl.TextColor3 = COL.textDim
-				pcl.TextXAlignment = Enum.TextXAlignment.Left
-				pcl.RichText = true
-				pcl.BackgroundTransparency = 1
-				pcl.Position = UDim2.new(0, 12, 0, 22)
-				pcl.Size = UDim2.new(1, -20, 0, 12)
-				pcl.Parent = fr
+				local kbtn = Instance.new("TextButton")
+				kbtn.Font = Enum.Font.GothamBold
+				kbtn.Text = cfg.Default.Name
+				kbtn.TextSize = 11
+				kbtn.TextColor3 = COL.text
+				kbtn.BackgroundColor3 = COL.btnBg
+				kbtn.BorderSizePixel = 0
+				kbtn.AutoButtonColor = false
+				kbtn.AnchorPoint = Vector2.new(1, 0.5)
+				kbtn.Position = UDim2.new(1, -8, 0.5, 0)
+				kbtn.Size = UDim2.new(0, 65, 0, 22)
+				kbtn.Parent = fr
+				Instance.new("UICorner", kbtn).CornerRadius = UDim.new(0, 6)
 
-				local yOff = 38
-				local InputBox
-				if cfg.Placeholder then
-					InputBox = Instance.new("TextBox")
-					InputBox.Font = Enum.Font.Gotham
-					InputBox.PlaceholderText = cfg.Placeholder
-					InputBox.PlaceholderColor3 = Color3.fromRGB(55, 55, 62)
-					InputBox.Text = cfg.Default
-					InputBox.TextSize = 11
-					InputBox.TextColor3 = Color3.fromRGB(190, 190, 198)
-					InputBox.TextXAlignment = Enum.TextXAlignment.Left
-					InputBox.BackgroundColor3 = COL.inputBg
-					InputBox.BorderSizePixel = 0
-					InputBox.Position = UDim2.new(0, 10, 0, yOff)
-					InputBox.Size = UDim2.new(1, -20, 0, 22)
-					InputBox.ClearTextOnFocus = false
-					InputBox.Parent = fr
-					Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 4)
-					local ibpad = Instance.new("UIPadding")
-					ibpad.PaddingLeft = UDim.new(0, 6)
-					ibpad.Parent = InputBox
-					yOff = yOff + 28
-				end
+				hoverBind(kbtn, kbtn, COL.btnBg, COL.btnHover)
 
-				local mbtn = Instance.new("TextButton")
-				mbtn.Font = Enum.Font.GothamBold
-				mbtn.Text = cfg.ButtonText
-				mbtn.TextSize = 11
-				mbtn.TextColor3 = COL.text
-				mbtn.BackgroundColor3 = COL.btnBg
-				mbtn.BorderSizePixel = 0
-				mbtn.AutoButtonColor = false
-				mbtn.Parent = fr
-				Instance.new("UICorner", mbtn).CornerRadius = UDim.new(0, 5)
-				hoverBind(mbtn, mbtn, COL.btnBg, COL.btnHover)
+				local listening = false
 
-				if cfg.SubButtonText then
-					mbtn.Size = UDim2.new(0.5, -12, 0, 26)
-					mbtn.Position = UDim2.new(0, 10, 0, yOff)
-					local sbt = Instance.new("TextButton")
-					sbt.Font = Enum.Font.GothamBold
-					sbt.Text = cfg.SubButtonText
-					sbt.TextSize = 11
-					sbt.TextColor3 = COL.text
-					sbt.BackgroundColor3 = COL.btnBg
-					sbt.BorderSizePixel = 0
-					sbt.AutoButtonColor = false
-					sbt.Size = UDim2.new(0.5, -12, 0, 26)
-					sbt.Position = UDim2.new(0.5, 2, 0, yOff)
-					sbt.Parent = fr
-					Instance.new("UICorner", sbt).CornerRadius = UDim.new(0, 5)
-					hoverBind(sbt, sbt, COL.btnBg, COL.btnHover)
-					sbt.MouseButton1Click:Connect(function() pcall(cfg.SubButtonCallback, InputBox and InputBox.Text or "") end)
-				else
-					mbtn.Size = UDim2.new(1, -20, 0, 26)
-					mbtn.Position = UDim2.new(0, 10, 0, yOff)
-				end
+				kbtn.MouseButton1Click:Connect(function()
+					if listening then return end
+					listening = true
+					kbtn.Text = "..."
+					TweenService:Create(kbtn, TWEEN_FAST, { BackgroundColor3 = Accent }):Play()
+				end)
 
-				mbtn.MouseButton1Click:Connect(function() pcall(cfg.ButtonCallback, InputBox and InputBox.Text or "") end)
-				if InputBox then
-					InputBox.FocusLost:Connect(function() PF.Value = InputBox.Text; ConfigData[ck2] = InputBox.Text end)
-				end
-				function PF:GetInput() return InputBox and InputBox.Text or "" end
+				UserInputService.InputBegan:Connect(function(input, gpe)
+					if gpe or not listening then return end
+					if input.UserInputType == Enum.UserInputType.Keyboard then
+						listening = false
+						F.Value = input.KeyCode
+						kbtn.Text = input.KeyCode.Name
+						ConfigData[ck] = input.KeyCode.Name
+						TweenService:Create(kbtn, TWEEN_FAST, { BackgroundColor3 = COL.btnBg }):Play()
+						pcall(cfg.Callback, input.KeyCode)
+					end
+				end)
+
+				UserInputService.InputBegan:Connect(function(input, gpe)
+					if gpe then return end
+					if input.KeyCode == F.Value then
+						pcall(cfg.Callback, input.KeyCode)
+					end
+				end)
+
 				CountItem += 1
-				return PF
+				Elements[ck] = F
+				return F
 			end
 
-			function Items:AddConfigPanel()
-				local selectedConfigName = CurrentConfigName or ""
-				local StatusParagraph = Items:AddParagraph({
-					Title = "Config Manager",
-					Content = "Current: " .. (CurrentConfigName or "None") .. " | Autoload: " .. (GetAutoload() or "None"),
-				})
-				local ConfigNameInput = Items:AddInput({
-					Title = "Config Name",
-					Default = CurrentConfigName or "",
-					Callback = function(v) selectedConfigName = v end,
-				})
-				local configs = GetConfigList()
-				local ConfigDropdown = Items:AddDropdown({
-					Title = "Select Config",
-					Options = configs,
-					Default = nil,
-					Callback = function(sel) selectedConfigName = sel; ConfigNameInput:Set(sel) end,
-				})
-				Items:AddButton({
-					Title = "Save",
-					SubTitle = "Load",
-					Callback = function()
-						if selectedConfigName ~= "" then
-							if SaveConfigAs(selectedConfigName) then
-								Notify("Config saved: " .. selectedConfigName, 3, Color3.fromRGB(100, 255, 130))
-								ConfigDropdown:SetValues(GetConfigList())
-								StatusParagraph:SetContent("Current: " .. selectedConfigName .. " | Autoload: " .. (GetAutoload() or "None"))
-							end
-						end
-					end,
-					SubCallback = function()
-						if selectedConfigName ~= "" then
-							if LoadConfig(selectedConfigName) then
-								Notify("Config loaded: " .. selectedConfigName, 3, Color3.fromRGB(100, 255, 130))
-								StatusParagraph:SetContent("Current: " .. selectedConfigName .. " | Autoload: " .. (GetAutoload() or "None"))
-							end
-						end
-					end,
-				})
-				Items:AddButton({
-					Title = "Delete",
-					SubTitle = "Set Autoload",
-					Callback = function()
-						if selectedConfigName ~= "" then
-							if DeleteConfig(selectedConfigName) then
-								Notify("Deleted: " .. selectedConfigName, 3, Color3.fromRGB(255, 100, 100))
-								selectedConfigName = ""; ConfigNameInput:Set("")
-								ConfigDropdown:SetValues(GetConfigList())
-								StatusParagraph:SetContent("Current: " .. (CurrentConfigName or "None") .. " | Autoload: " .. (GetAutoload() or "None"))
-							end
-						end
-					end,
-					SubCallback = function()
-						if selectedConfigName ~= "" then
-							SetAutoload(selectedConfigName)
-							Notify("Autoload: " .. selectedConfigName, 3, Color3.fromRGB(100, 180, 255))
-							StatusParagraph:SetContent("Current: " .. (CurrentConfigName or "None") .. " | Autoload: " .. selectedConfigName)
-						end
-					end,
-				})
-				Items:AddButton({
-					Title = "Refresh",
-					SubTitle = "Clear Autoload",
-					Callback = function()
-						local nc = GetConfigList(); ConfigDropdown:SetValues(nc)
-						Notify("Refreshed (" .. #nc .. ")", 2, Color3.fromRGB(150, 150, 255))
-					end,
-					SubCallback = function()
-						ClearAutoload()
-						Notify("Autoload cleared", 3, Color3.fromRGB(200, 200, 100))
-						StatusParagraph:SetContent("Current: " .. (CurrentConfigName or "None") .. " | Autoload: None")
-					end,
-				})
-				Items:AddButton({
-					Title = "Reset All Elements",
-					Callback = function() ResetElements(); Notify("All elements reset", 3, Color3.fromRGB(255, 200, 100)) end,
-				})
-				Items:AddButton({
-					Title = "Export Config",
-					Callback = function()
-						if not setclipboard then Notify("Clipboard not supported", 3, Color3.fromRGB(255, 100, 100)); return end
-						ConfigData._version = CURRENT_VERSION
-						setclipboard(HttpService:JSONEncode(ConfigData))
-						Notify("Copied to clipboard", 3, Color3.fromRGB(100, 255, 130))
-					end,
-				})
-				Items:AddSubSection("Import External")
-				Items:AddInput({ Title = "External JSON", Default = "", Callback = function() end })
-				Items:AddButton({
-					Title = "Import Config",
-					Callback = function()
-						local inp = Elements["Input_External JSON"]; local json = inp and inp.Value
-						if not json or json == "" then Notify("JSON is empty", 3, Color3.fromRGB(255, 100, 100)); return end
-						ResetElements()
-						local ok = pcall(function() LoadExternalConfigFromJSON(json) end)
-						if ok then Notify("External config loaded", 3, Color3.fromRGB(100, 255, 130))
-							StatusParagraph:SetContent("Current: External | Autoload: " .. (GetAutoload() or "None"))
-						else Notify("Failed to load JSON", 3, Color3.fromRGB(255, 100, 100)) end
-					end,
-				})
-				return {
-					UpdateStatus = function() StatusParagraph:SetContent("Current: " .. (CurrentConfigName or "None") .. " | Autoload: " .. (GetAutoload() or "None")) end,
-					RefreshList = function() ConfigDropdown:SetValues(GetConfigList()) end,
-				}
+			function Items:AddColorPicker(cfg)
+				cfg = cfg or {}
+				cfg.Title = cfg.Title or "Color"
+				cfg.Default = cfg.Default or Color3.fromRGB(255, 255, 255)
+				cfg.Callback = cfg.Callback or function() end
+
+				local ck = "Color_" .. cfg.Title
+				if ConfigData[ck] ~= nil then
+					local saved = ConfigData[ck]
+					if type(saved) == "table" and saved[1] and saved[2] and saved[3] then
+						cfg.Default = Color3.fromRGB(saved[1], saved[2], saved[3])
+					end
+				end
+				local F = { Value = cfg.Default }
+
+				local fr = Instance.new("Frame")
+				fr.Size = UDim2.new(1, 0, 0, 34)
+				fr.BackgroundColor3 = COL.card
+				fr.BorderSizePixel = 0
+				fr.LayoutOrder = CountItem
+				fr.Parent = ItemHolder
+				Instance.new("UICorner", fr).CornerRadius = UDim.new(0, 8)
+
+				local ctl = Instance.new("TextLabel")
+				ctl.Font = Enum.Font.GothamBold
+				ctl.Text = cfg.Title
+				ctl.TextSize = 12
+				ctl.TextColor3 = COL.text
+				ctl.TextXAlignment = Enum.TextXAlignment.Left
+				ctl.BackgroundTransparency = 1
+				ctl.Position = UDim2.new(0, 12, 0, 0)
+				ctl.Size = UDim2.new(0.6, 0, 1, 0)
+				ctl.Parent = fr
+
+				local cprev = Instance.new("Frame")
+				cprev.AnchorPoint = Vector2.new(1, 0.5)
+				cprev.Position = UDim2.new(1, -8, 0.5, 0)
+				cprev.Size = UDim2.new(0, 50, 0, 22)
+				cprev.BackgroundColor3 = cfg.Default
+				cprev.BorderSizePixel = 0
+				cprev.Parent = fr
+				Instance.new("UICorner", cprev).CornerRadius = UDim.new(0, 6)
+
+				local cStroke = Instance.new("UIStroke")
+				cStroke.Color = COL.border
+				cStroke.Thickness = 1
+				cStroke.Transparency = 0.5
+				cStroke.Parent = cprev
+
+				local cbtn = Instance.new("TextButton")
+				cbtn.Text = ""
+				cbtn.Size = UDim2.new(1, 0, 1, 0)
+				cbtn.BackgroundTransparency = 1
+				cbtn.Parent = cprev
+
+				function F:Set(col)
+					F.Value = col
+					cprev.BackgroundColor3 = col
+					ConfigData[ck] = {math.floor(col.R * 255), math.floor(col.G * 255), math.floor(col.B * 255)}
+					pcall(cfg.Callback, col)
+				end
+
+				cbtn.MouseButton1Click:Connect(function()
+					Notify("Color picker coming soon!", 2, Accent)
+				end)
+
+				CountItem += 1
+				Elements[ck] = F
+				return F
 			end
 
 			CountSection += 1
@@ -2111,12 +1988,113 @@ function Orion:Window(GuiConfig)
 		end
 
 		CountTab += 1
-		local safeName = TabConfig.Name:gsub("%s+", "_")
-		_G[safeName] = Sections
 		return Sections
 	end
 
-	return Tabs
+	function GuiFunc:AddConfigSection()
+		local ConfigTab = Tabs:AddTab({Name = "Settings", Icon = "settings"})
+		local ConfigSection = ConfigTab:AddSection("Configuration", true)
+
+		ConfigSection:AddParagraph({
+			Title = "Config System",
+			Content = "Save and load your settings across sessions."
+		})
+
+		local configDropdown = ConfigSection:AddDropdown({
+			Title = "Select Config",
+			Options = GetConfigList(),
+			Callback = function() end
+		})
+
+		local configNameInput = ConfigSection:AddInput({
+			Title = "Config Name",
+			Default = "",
+			Callback = function() end
+		})
+
+		ConfigSection:AddButton({
+			Title = "Save Config",
+			Callback = function()
+				local name = configNameInput.Value
+				if SaveConfigAs(name) then
+					Notify("Config saved: " .. name, 2, Color3.fromRGB(80, 200, 120))
+					configDropdown:SetValues(GetConfigList(), name)
+				else
+					Notify("Failed to save config", 2, Color3.fromRGB(220, 85, 85))
+				end
+			end,
+			SubTitle = "Load Config",
+			SubCallback = function()
+				local name = configDropdown.Value
+				if LoadConfig(name) then
+					Notify("Config loaded: " .. name, 2, Color3.fromRGB(80, 200, 120))
+				else
+					Notify("Failed to load config", 2, Color3.fromRGB(220, 85, 85))
+				end
+			end
+		})
+
+		ConfigSection:AddButton({
+			Title = "Delete Config",
+			Callback = function()
+				local name = configDropdown.Value
+				if DeleteConfig(name) then
+					Notify("Config deleted: " .. name, 2, Color3.fromRGB(220, 200, 85))
+					configDropdown:SetValues(GetConfigList(), nil)
+				else
+					Notify("Failed to delete config", 2, Color3.fromRGB(220, 85, 85))
+				end
+			end,
+			SubTitle = "Refresh List",
+			SubCallback = function()
+				configDropdown:SetValues(GetConfigList(), configDropdown.Value)
+				Notify("Config list refreshed", 1.5, Accent)
+			end
+		})
+
+		local AutoloadSection = ConfigTab:AddSection("Autoload")
+
+		local autoloadToggle = AutoloadSection:AddToggle({
+			Title = "Enable Autoload",
+			Default = GetAutoload() ~= nil,
+			Callback = function(val)
+				if val then
+					local name = configDropdown.Value
+					if name and name ~= "" then
+						SetAutoload(name)
+						Notify("Autoload set: " .. name, 2, Accent)
+					else
+						autoloadToggle:Set(false)
+						Notify("Select a config first", 2, Color3.fromRGB(220, 85, 85))
+					end
+				else
+					ClearAutoload()
+					Notify("Autoload cleared", 2, Color3.fromRGB(220, 200, 85))
+				end
+			end
+		})
+
+		AutoloadSection:AddParagraph({
+			Title = "Current Autoload",
+			Content = GetAutoload() or "None"
+		})
+
+		local InfoSection = ConfigTab:AddSection("Information")
+
+		InfoSection:AddParagraph({
+			Title = "Hotkeys",
+			Content = "Press <b>F3</b> to toggle GUI visibility"
+		})
+
+		InfoSection:AddButton({
+			Title = "Destroy GUI",
+			Callback = function()
+				GuiFunc:DestroyGui()
+			end
+		})
+	end
+
+	return GuiFunc, Tabs
 end
 
 return Orion
