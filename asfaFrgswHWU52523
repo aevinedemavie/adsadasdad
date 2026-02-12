@@ -577,7 +577,7 @@ function Orion:Window(GuiConfig)
 		}):Play()
 		task.delay(0.35, function()
 			ScreenGui:Destroy()
-			if CoreGui:FindFirstChild("OrionToggle") then CoreGui:OrionToggle:Destroy() end
+			if CoreGui:FindFirstChild("OrionToggle") then CoreGui.OrionToggle:Destroy() end
 		end)
 	end)
 
@@ -1790,7 +1790,8 @@ function Orion:Window(GuiConfig)
 
 		local AutoloadSection = ConfigTab:AddSection("Autoload")
 
-		local autoloadToggle = AutoloadSection:AddToggle({
+		local autoloadToggle
+		autoloadToggle = AutoloadSection:AddToggle({
 			Title = "Enable Autoload",
 			Default = GetAutoload() ~= nil,
 			Callback = function(val)
@@ -1800,7 +1801,7 @@ function Orion:Window(GuiConfig)
 						SetAutoload(name)
 						Notify("Autoload set: " .. name, 2, Accent)
 					else
-						autoloadToggle:Set(false)
+						if autoloadToggle then autoloadToggle:Set(false) end
 						Notify("Select a config first", 2, Color3.fromRGB(220, 85, 85))
 					end
 				else
