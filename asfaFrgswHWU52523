@@ -1970,15 +1970,15 @@ function Orion:Window(GuiConfig)
 			CountItem += 1
 			Elements[ck] = F
 			return F
-		end
+		end -- ✓ End of AddColorPicker
 
 		CountSection += 1
 		return Items
-	end
+	end -- ✓ End of AddSection
 
 	CountTab += 1
 	return Sections
-end
+end -- ✓ End of AddTab
 
 function GuiFunc:AddConfigSection()
 	local ConfigTab = Tabs:AddTab({Name = "Settings", Icon = "settings"})
@@ -2081,6 +2081,6 @@ function GuiFunc:AddConfigSection()
 			GuiFunc:DestroyGui()
 		end
 	})
-end
+end 
 
-return GuiFunc, Tabs
+return GuiFunc, Tabs 
