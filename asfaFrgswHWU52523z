@@ -1783,6 +1783,13 @@ function Orion:Window(GuiConfig)
 			end
 		})
 
+		ConfigSection:AddButton({
+			Title = "Close",
+			Callback = function()
+				GuiFunc:DestroyGui()
+			end
+		})
+	end
 
 	return GuiFunc, Tabs
 end
