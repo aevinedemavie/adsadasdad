@@ -485,15 +485,15 @@ function Orion:Window(GuiConfig)
 	local TopBar = Instance.new("Frame")
 	TopBar.Name = "TopBar"
 	TopBar.Size = UDim2.new(1, 0, 0, 38)
-	TopBar.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
-	TopBar.BackgroundTransparency = 0.5
+	TopBar.BackgroundColor3 = COL.bg
+	TopBar.BackgroundTransparency = 0
 	TopBar.BorderSizePixel = 0
 	TopBar.ZIndex = 10
 	TopBar.Parent = Main
 
 	local TopDivider = Instance.new("Frame")
-	TopDivider.Size = UDim2.new(1, 0, 0, 1)
-	TopDivider.Position = UDim2.new(0, 0, 1, -1)
+	TopDivider.Size = UDim2.new(1, -(TabW + 1), 0, 1)
+	TopDivider.Position = UDim2.new(0, TabW + 1, 1, -1)
 	TopDivider.BackgroundColor3 = COL.border
 	TopDivider.BackgroundTransparency = 0.5
 	TopDivider.BorderSizePixel = 0
@@ -589,6 +589,8 @@ function Orion:Window(GuiConfig)
 	Sidebar.BorderSizePixel = 0
 	Sidebar.ZIndex = 2
 	Sidebar.Parent = Main
+	local sideCorner = Instance.new("UICorner", Sidebar)
+	sideCorner.CornerRadius = UDim.new(0, 12)
 
 	local SideDivider = Instance.new("Frame")
 	SideDivider.Size = UDim2.new(0, 1, 1, 0)
@@ -603,7 +605,7 @@ function Orion:Window(GuiConfig)
 	LogoImg.Size = UDim2.new(0, 22, 0, 22)
 	LogoImg.Position = UDim2.new(0, 12, 0, -30)
 	LogoImg.BackgroundTransparency = 1
-	LogoImg.Image = "rbxassetid://128370480474724"
+	LogoImg.Image = "rbxassetid://134197362082558"
 	LogoImg.ScaleType = Enum.ScaleType.Fit
 	LogoImg.ZIndex = 12
 	LogoImg.Parent = TopBar
@@ -968,16 +970,14 @@ function Orion:Window(GuiConfig)
 	BtnGui.Parent = CoreGui
 
 	local TogBtn = Instance.new("ImageButton")
-	TogBtn.Size = UDim2.new(0, 34, 0, 34)
+	TogBtn.Size = UDim2.new(0, 40, 0, 40)
 	TogBtn.Position = UDim2.new(0, 14, 0, 100)
-	TogBtn.BackgroundColor3 = Color3.fromRGB(16, 16, 20)
+	TogBtn.BackgroundTransparency = 1
 	TogBtn.BorderSizePixel = 0
 	TogBtn.AutoButtonColor = false
-	TogBtn.Image = "rbxassetid://128370480474724"
+	TogBtn.Image = "rbxassetid://134197362082558"
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
-	local togCorner = Instance.new("UICorner", TogBtn)
-	togCorner.CornerRadius = UDim.new(0, 10)
 
 	TogBtn.MouseButton1Click:Connect(function()
 		Main.Visible = not Main.Visible
