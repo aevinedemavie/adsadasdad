@@ -490,6 +490,8 @@ function Orion:Window(GuiConfig)
 	TopBar.BorderSizePixel = 0
 	TopBar.ZIndex = 10
 	TopBar.Parent = Main
+	local topBarCorner = Instance.new("UICorner", TopBar)
+	topBarCorner.CornerRadius = UDim.new(0, 12)
 
 	local TopDivider = Instance.new("Frame")
 	TopDivider.Size = UDim2.new(1, -(TabW + 1), 0, 1)
@@ -591,13 +593,12 @@ function Orion:Window(GuiConfig)
 	Sidebar.Parent = Main
 	local sideCorner = Instance.new("UICorner", Sidebar)
 	sideCorner.CornerRadius = UDim.new(0, 12)
-
 	local SideCap = Instance.new("Frame")
-	SideCap.Size = UDim2.new(1, 0, 0, 14)
+	SideCap.Size = UDim2.new(1, 0, 0, 12)
 	SideCap.Position = UDim2.new(0, 0, 0, 0)
 	SideCap.BackgroundColor3 = COL.sidebar
 	SideCap.BorderSizePixel = 0
-	SideCap.ZIndex = 2
+	SideCap.ZIndex = 3
 	SideCap.Parent = Sidebar
 
 	local SideDivider = Instance.new("Frame")
@@ -978,14 +979,23 @@ function Orion:Window(GuiConfig)
 	BtnGui.Parent = CoreGui
 
 	local TogBtn = Instance.new("ImageButton")
-	TogBtn.Size = UDim2.new(0, 40, 0, 40)
-	TogBtn.Position = UDim2.new(0, 14, 0, 100)
-	TogBtn.BackgroundTransparency = 1
+	TogBtn.Size = UDim2.new(0, 44, 0, 44)
+	TogBtn.Position = UDim2.new(0, 10, 0, 100)
+	TogBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+	TogBtn.BackgroundTransparency = 0.15
 	TogBtn.BorderSizePixel = 0
 	TogBtn.AutoButtonColor = false
 	TogBtn.Image = GuiConfig.Image and ("rbxassetid://" .. GuiConfig.Image:gsub("rbxassetid://", "")) or "rbxassetid://134197362082558"
+	TogBtn.ImageTransparency = 0
 	TogBtn.ScaleType = Enum.ScaleType.Fit
 	TogBtn.Parent = BtnGui
+	local togCorner = Instance.new("UICorner", TogBtn)
+	togCorner.CornerRadius = UDim.new(0, 10)
+	local togPad = Instance.new("UIPadding", TogBtn)
+	togPad.PaddingLeft = UDim.new(0, 6)
+	togPad.PaddingRight = UDim.new(0, 6)
+	togPad.PaddingTop = UDim.new(0, 6)
+	togPad.PaddingBottom = UDim.new(0, 6)
 
 	TogBtn.MouseButton1Click:Connect(function()
 		Main.Visible = not Main.Visible
@@ -1261,7 +1271,7 @@ function Orion:Window(GuiConfig)
 
 			local Items = {}
 			local CountItem = 0
-			
+
 			function Items:AddToggle(cfg)
 				cfg = cfg or {}
 				cfg.Title = cfg.Title or "Toggle"
@@ -1524,6 +1534,105 @@ function Orion:Window(GuiConfig)
 				F:Set(F.Value)
 				CountItem += 1
 				Elements[ck] = F
+				return F
+			end
+
+			-- ============================================================
+			-- AddParagraph: menampilkan judul + teks deskripsi multi-baris
+			-- Penggunaan:
+			--   local p = Section:AddParagraph({
+			--       Title   = "Info",          -- opsional
+			--       Content = "Teks panjang…", -- opsional
+			--   })
+			--   p:SetTitle("Judul baru")
+			--   p:SetContent("Isi baru")
+			-- ============================================================
+			function Items:AddParagraph(cfg)
+				cfg = cfg or {}
+				cfg.Title   = cfg.Title   or ""
+				cfg.Content = cfg.Content or ""
+
+				local fr = Instance.new("Frame")
+				fr.Size              = UDim2.new(1, 0, 0, 34)
+				fr.BackgroundColor3  = COL.card
+				fr.BorderSizePixel   = 0
+				fr.LayoutOrder       = CountItem
+				fr.ClipsDescendants  = true
+				fr.Parent            = ItemHolder
+				local frCorner = Instance.new("UICorner", fr)
+				frCorner.CornerRadius = UDim.new(0, 8)
+
+				local frPad = Instance.new("UIPadding", fr)
+				frPad.PaddingLeft   = UDim.new(0, 12)
+				frPad.PaddingRight  = UDim.new(0, 12)
+				frPad.PaddingTop    = UDim.new(0, 8)
+				frPad.PaddingBottom = UDim.new(0, 8)
+
+				local frLayout = Instance.new("UIListLayout", fr)
+				frLayout.Padding         = UDim.new(0, 4)
+				frLayout.SortOrder       = Enum.SortOrder.LayoutOrder
+				frLayout.FillDirection   = Enum.FillDirection.Vertical
+				frLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+
+				local titleLbl = Instance.new("TextLabel", fr)
+				titleLbl.Name              = "ParagraphTitle"
+				titleLbl.Font              = Enum.Font.GothamBold
+				titleLbl.Text              = cfg.Title
+				titleLbl.TextSize          = 12
+				titleLbl.TextColor3        = COL.text
+				titleLbl.TextXAlignment    = Enum.TextXAlignment.Left
+				titleLbl.TextWrapped       = true
+				titleLbl.BackgroundTransparency = 1
+				titleLbl.Size              = UDim2.new(1, 0, 0, 14)
+				titleLbl.LayoutOrder       = 1
+				titleLbl.Visible           = cfg.Title ~= ""
+
+				local contentLbl = Instance.new("TextLabel", fr)
+				contentLbl.Name              = "ParagraphContent"
+				contentLbl.Font              = Enum.Font.Gotham
+				contentLbl.Text              = cfg.Content
+				contentLbl.TextSize          = 11
+				contentLbl.TextColor3        = COL.textDim
+				contentLbl.TextXAlignment    = Enum.TextXAlignment.Left
+				contentLbl.TextWrapped       = true
+				contentLbl.BackgroundTransparency = 1
+				contentLbl.Size              = UDim2.new(1, 0, 0, 0)
+				contentLbl.AutomaticSize    = Enum.AutomaticSize.Y
+				contentLbl.LayoutOrder      = 2
+				contentLbl.Visible          = cfg.Content ~= ""
+
+				-- hitung ulang tinggi frame setiap kali layout berubah
+				local function recalcHeight()
+					task.defer(function()
+						local h = frLayout.AbsoluteContentSize.Y + 16
+						TweenService:Create(fr, TWEEN_FAST, {
+							Size = UDim2.new(1, 0, 0, math.max(h, 34))
+						}):Play()
+					end)
+				end
+
+				recalcHeight()
+				frLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(recalcHeight)
+
+				local F = {}
+
+				function F:SetTitle(val)
+					val = val or ""
+					cfg.Title      = val
+					titleLbl.Text  = val
+					titleLbl.Visible = val ~= ""
+					recalcHeight()
+				end
+
+				function F:SetContent(val)
+					val = val or ""
+					cfg.Content       = val
+					contentLbl.Text   = val
+					contentLbl.Visible = val ~= ""
+					recalcHeight()
+				end
+
+				CountItem += 1
 				return F
 			end
 
