@@ -1636,6 +1636,20 @@ function Orion:Window(GuiConfig)
 				return F
 			end
 
+			function Items:AddDivider()
+				local line = Instance.new("Frame")
+				line.Size = UDim2.new(1, -24, 0, 1)
+				line.Position = UDim2.new(0, 12, 0, 0)
+				line.BackgroundColor3 = COL.border
+				line.BorderSizePixel = 0
+				line.LayoutOrder = CountItem
+				line.Parent = ItemHolder
+				local corner = Instance.new("UICorner")
+				corner.CornerRadius = UDim.new(0, 1)
+				corner.Parent = line
+				CountItem += 1
+			end
+
 			function Items:AddSubSection(title)
 				title = title or "Sub Section"
 				local sub = Instance.new("Frame")
